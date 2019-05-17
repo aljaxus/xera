@@ -12,6 +12,11 @@ export default new Router({
       component: Home
     },
     {
+      path: '/b/',
+      name: 'browse',
+      component: () => import('./views/Browse')
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting

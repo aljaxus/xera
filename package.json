@@ -5,7 +5,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "gitpush": "git push",
+    "gitpull": "git pull",
+    "gitstatus": "git status"
   },
   "dependencies": {
     "@mdi/font": "^2.6.95",
@@ -31,7 +34,8 @@
     "stylus-loader": "^3.0.1",
     "vue-cli-plugin-vuetify": "^0.5.0",
     "vue-template-compiler": "^2.5.21",
-    "vuetify-loader": "^1.0.5"
+    "vuetify-loader": "^1.0.5",
+    "webpack": "^4.0.0"
   },
   "eslintConfig": {
     "root": true,

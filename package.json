@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "buildcp": "npm run build && cp -R ./dist/* /etc/nginx/public.d/8004",
     "lint": "vue-cli-service lint",
     "gitpush": "git push",
     "gitpull": "git pull",

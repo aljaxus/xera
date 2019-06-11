@@ -1,4 +1,4 @@
-# upfdl-ui
+# xera
 
 ## Project setup
 ```

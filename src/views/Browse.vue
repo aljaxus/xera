@@ -11,7 +11,6 @@
       ></v-text-field>
       <v-treeview
         v-model="tree"
-        :open="open"
         :items="items"
         :search="search"
         transition
@@ -27,7 +26,7 @@
           </v-icon>
         </template>
         <template v-slot:label="{ item, open }">
-          <span 
+          <span
             v-if="['mp4', 'mkv'].includes(item.filetype)"
             @click="videosource = item.path"
           >{{ item.name }}</span>
@@ -37,24 +36,28 @@
       </v-treeview>
     </v-flex>
     <v-flex xs12 md6>
-      <video id="video-id" width="100%" height="100%">
-        <source :src="videosource" type="video/mp4"/>
-      </video>
+      <VideoPlayer
+        v-if="!!videosource"
+        :source="videosource"
+      />
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 import axios from 'axios'
+import VideoPlayer from '../components/VideoPlayer'
 
 export default {
   name: 'Browse-route',
+  components: {
+    VideoPlayer
+  },
   data () {
     return {
       loading: true,
       search: '',
       items: [],
-      open: [],
       tree: [],
       files: {
         placeholder: 'mdi-file',
@@ -79,42 +82,42 @@ export default {
         },
       ],
       videosource: '',
-      videoplayer: null,
     }
   },
   watch: {
-    videosource (newval, oldval) {
-      this.videoplayer = null
-      this.videoplayer = fluidPlayer('video-id', {
-        layoutControls: {
-          fillToContainer: false,
-          primaryColor: false,
-          posterImage: false,
-          autoPlay: true,
-          playButtonShowing: true,
-          playPauseAnimation: true,
-          mute: false,
-          logo: {
-            imageUrl: null,
-            position: 'top left',
-            clickUrl: null,
-            opacity: 1,
-            mouseOverImageUrl: null,
-            imageMargin: '2px',
-            hideWithControls: false,
-            showOverAds: false
-          },
-          allowDownload: true,
-          allowTheatre: true,
-          playbackRateEnabled: false,
-          controlBar: {
-            autoHide: true,
-            autoHideTimeout: 3,
-            animated: true
-          },
-        }
-      })
-    }
+    // videosource (newval, oldval) {
+    //   this.videoplayer = null
+    //   this.$refs['video-player-container-ref']
+    //   this.videoplayer = fluidPlayer('video-player-id', {
+    //     layoutControls: {
+    //       fillToContainer: false,
+    //       primaryColor: false,
+    //       posterImage: false,
+    //       autoPlay: true,
+    //       playButtonShowing: true,
+    //       playPauseAnimation: true,
+    //       mute: false,
+    //       logo: {
+    //         imageUrl: null,
+    //         position: 'top left',
+    //         clickUrl: null,
+    //         opacity: 1,
+    //         mouseOverImageUrl: null,
+    //         imageMargin: '2px',
+    //         hideWithControls: false,
+    //         showOverAds: false
+    //       },
+    //       allowDownload: true,
+    //       allowTheatre: true,
+    //       playbackRateEnabled: false,
+    //       controlBar: {
+    //         autoHide: true,
+    //         autoHideTimeout: 3,
+    //         animated: true
+    //       },
+    //     }
+    //   })
+    // }
   },
   computed: {
 

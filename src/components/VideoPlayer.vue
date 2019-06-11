@@ -1,80 +1,77 @@
 <template>
-  <v-dialog
-    v-model="leopen"
-    max-width="unset"
-    transition="dialog-transition"
-  >
+  <div v-if="display" width="100%" height="100%" class="maindiv">
     <video id="video-id" width="100%" height="100%">
       <source :src="source" type="video/mp4"/>
     </video>
-  </v-dialog>
+  </div>
 </template>
 
 <script>
 export default {
   name: 'VideoPlayer',
   props: {
-    open: {
-      type: Boolean,
-      required: true,
-    },
     source: {
       type: String,
-      required: true,
+      required: true
     }
   },
   data () {return {
     player: null,
+    display: false
   }},
   watch: {
-    open (newval, oldval) {
-      if (newval === false) { this.player.pause() }
-      if (newval === true) { this.loadPlayer() }
+    source (newval, oldval) {
+      if (newval === oldval) return
+      if (!newval || String(newval).length === 0) { this.player.pause() }
+      if (newval) { this.loadPlayer() }
     }
-  },
-  computed: {
-    leopen: {
-      get () { return this.open },
-      set (val) { if (val === false) this.$emit('close', true) },
-    },
   },
   methods: {
     loadPlayer () {
+      this.display = false
       this.player = null
-      this.player = fluidPlayer('video-id', {
-        layoutControls: {
-          fillToContainer: false,
-          primaryColor: false,
-          posterImage: false,
-          autoPlay: true,
-          playButtonShowing: true,
-          playPauseAnimation: true,
-          mute: false,
-          logo: {
-            imageUrl: null,
-            position: 'top left',
-            clickUrl: null,
-            opacity: 1,
-            mouseOverImageUrl: null,
-            imageMargin: '2px',
-            hideWithControls: false,
-            showOverAds: false
-          },
-          allowDownload: true,
-          allowTheatre: true,
-          playbackRateEnabled: false,
-          controlBar: {
-            autoHide: true,
-            autoHideTimeout: 3,
-            animated: true
-          },
-        }
+      this.$nextTick(() => {
+        // Add the component back in
+        this.display = true
+        this.$nextTick(() => {
+          this.player = fluidPlayer('video-id', {
+            layoutControls: {
+              fillToContainer: false,
+              primaryColor: false,
+              posterImage: false,
+              autoPlay: true,
+              playButtonShowing: true,
+              playPauseAnimation: true,
+              mute: false,
+              logo: {
+                imageUrl: null,
+                position: 'top left',
+                clickUrl: null,
+                opacity: 1,
+                mouseOverImageUrl: null,
+                imageMargin: '2px',
+                hideWithControls: false,
+                showOverAds: false
+              },
+              allowDownload: true,
+              allowTheatre: true,
+              playbackRateEnabled: false,
+              controlBar: {
+                autoHide: true,
+                autoHideTimeout: 3,
+                animated: true
+              }
+            }
+          })
+        })
       })
     }
-  }
+  },
+  mounted () { this.loadPlayer() }
 }
 </script>
-
-<style>
-
+<style scoped>
+.maindiv {
+  overflow: hidden !important;
+}
 </style>

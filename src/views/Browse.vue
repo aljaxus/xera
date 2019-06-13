@@ -27,18 +27,19 @@
         </template>
         <template v-slot:label="{ item, open }">
           <span
-            v-if="['mp4', 'mkv'].includes(item.filetype)"
-            @click="videosource = item.path"
+            @click="setDisplay(item.path, item.filetype)"
           >{{ item.name }}</span>
-          
-          <span v-else>{{ item.name }}</span>
         </template>
       </v-treeview>
     </v-flex>
     <v-flex xs12 md6>
       <VideoPlayer
-        v-if="!!videosource"
-        :source="videosource"
+        v-if="displaytype === 'video'"
+        :source="displaysource"
+      />
+      <ImageViewer
+        v-if="displaytype === 'image'"
+        :source="displaysource"
       />
     </v-flex>
   </v-layout>
@@ -47,11 +48,13 @@
 <script>
 import axios from 'axios'
 import VideoPlayer from '../components/VideoPlayer'
+import ImageViewer from '../components/ImageViewer'
 
 export default {
   name: 'Browse-route',
   components: {
-    VideoPlayer
+    VideoPlayer,
+    ImageViewer,
   },
   data () {
     return {
@@ -81,48 +84,32 @@ export default {
           url: 'http://192.168.1.100:8003'
         },
       ],
-      videosource: '',
+      displaysource: '',
+      displaytype: '',
     }
   },
-  watch: {
-    // videosource (newval, oldval) {
-    //   this.videoplayer = null
-    //   this.$refs['video-player-container-ref']
-    //   this.videoplayer = fluidPlayer('video-player-id', {
-    //     layoutControls: {
-    //       fillToContainer: false,
-    //       primaryColor: false,
-    //       posterImage: false,
-    //       autoPlay: true,
-    //       playButtonShowing: true,
-    //       playPauseAnimation: true,
-    //       mute: false,
-    //       logo: {
-    //         imageUrl: null,
-    //         position: 'top left',
-    //         clickUrl: null,
-    //         opacity: 1,
-    //         mouseOverImageUrl: null,
-    //         imageMargin: '2px',
-    //         hideWithControls: false,
-    //         showOverAds: false
-    //       },
-    //       allowDownload: true,
-    //       allowTheatre: true,
-    //       playbackRateEnabled: false,
-    //       controlBar: {
-    //         autoHide: true,
-    //         autoHideTimeout: 3,
-    //         animated: true
-    //       },
-    //     }
-    //   })
-    // }
-  },
-  computed: {
-
-  },
   methods: {
+    setDisplay (source, filetype) {
+      if (!source) return
+      const types = {
+        html: 'text',
+        js: 'text',
+        json: 'text',
+        md: 'text',
+        pdf: 'pdf',
+        png: 'image',
+        jpg: 'image',
+        jpeg: 'image',
+        txt: 'text',
+        mp3: 'music',
+        mp4: 'video',
+        mkv: 'video',
+      }
+      if (types[filetype]) {
+        this.displaysource = source
+        this.displaytype = types[filetype]
+      }
+    },
     async fetchFolder (url) { 
       try {
         if (url.substr(-1, 1) !== '/') url += '/'

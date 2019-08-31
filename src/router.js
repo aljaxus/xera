@@ -8,7 +8,7 @@ export default new Router({
     {
       path: '/',
       name: 'browse',
-      component: () => import('./views/Browse')
-    }
-  ]
+      component: () => import('./views/Browse'),
+    },
+  ],
 })

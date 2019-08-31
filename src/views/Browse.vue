@@ -1,6 +1,12 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs12 md6>
+  <v-layout
+    row
+    wrap
+  >
+    <v-flex
+      xs12
+      md6
+    >
       <v-text-field
         v-model="search"
         label="Search"
@@ -8,7 +14,7 @@
         clearable
         clear-icon="mdi-close-circle-outline"
         class="ma-3"
-      ></v-text-field>
+      />
       <v-treeview
         v-model="tree"
         :items="items"
@@ -32,7 +38,10 @@
         </template>
       </v-treeview>
     </v-flex>
-    <v-flex xs12 md6>
+    <v-flex
+      xs12
+      md6
+    >
       <VideoPlayer
         v-if="displaytype === 'video'"
         :source="displaysource"
@@ -51,7 +60,7 @@ import VideoPlayer from '../components/VideoPlayer'
 import ImageViewer from '../components/ImageViewer'
 
 export default {
-  name: 'Browse-route',
+  name: 'BrowseRoute',
   components: {
     VideoPlayer,
     ImageViewer,
@@ -80,13 +89,16 @@ export default {
       },
       sources: [
         {
-          name: '192.168.1.100:8003',
-          url: 'http://192.168.1.100:8003'
+          name: 'movies-skyline.dyndns.tv/SeriesTVS/',
+          url: 'http://localhost:3000/?url=https://movies-skyline.dyndns.tv/SeriesTVS/',
         },
       ],
       displaysource: '',
       displaytype: '',
     }
+  },
+  async mounted () {
+    await this.fetchAllFolders()
   },
   methods: {
     setDisplay (source, filetype) {
@@ -119,7 +131,7 @@ export default {
         const html = await axios(url, {
           method: 'GET',
           mode: 'no-cors',
-          withCredentials: false
+          withCredentials: false,
         })
         const parsed1 = html.data.match(/href="(.+?)"/mgi)
         const parsed2 = parsed1.map(el => el.slice(6, -1))
@@ -128,8 +140,8 @@ export default {
         const files = parsed2.filter(el => el.substr(-1) !== '/').map(el => { 
           return {
             name: decodeURI(el), 
-            filetype: el.substr((Math.max(0, el.lastIndexOf(".")) || Infinity) + 1),
-            path: url+el,
+            filetype: el.substr((Math.max(0, el.lastIndexOf('.')) || Infinity) + 1),
+            path: url + el,
           } 
         })
         
@@ -137,7 +149,7 @@ export default {
 
         for (const i in folders) {
           if (folders.hasOwnProperty(i)) {
-            const folderUrl = url+folders[i]
+            const folderUrl = url + folders[i]
             const folderData = await this.fetchFolder(folderUrl)
             populatedFolders.push(folderData)
 
@@ -169,11 +181,8 @@ export default {
         }
       }
       this.loading = false
-    }
+    },
   },
-  async mounted () {
-    await this.fetchAllFolders()
-  }
 }
 </script>
 

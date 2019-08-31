@@ -1,7 +1,19 @@
 <template>
-  <div v-if="display" width="100%" height="100%" class="maindiv">
-    <video id="video-id" width="100%" height="100%">
-      <source :src="source" type="video/mp4"/>
+  <div
+    v-if="display"
+    width="100%"
+    height="100%"
+    class="maindiv"
+  >
+    <video
+      id="video-id"
+      width="100%"
+      height="100%"
+    >
+      <source
+        :src="source"
+        type="video/mp4"
+      >
     </video>
   </div>
 </template>
@@ -12,20 +24,23 @@ export default {
   props: {
     source: {
       type: String,
-      required: true
+      required: true,
+    },
+  },
+  data () {
+    return {
+      player: null,
+      display: false,
     }
   },
-  data () {return {
-    player: null,
-    display: false
-  }},
   watch: {
     source (newval, oldval) {
       if (newval === oldval) return
       if (!newval || String(newval).length === 0) { this.player.pause() }
       if (newval) { this.loadPlayer() }
-    }
+    },
   },
+  mounted () { this.loadPlayer() },
   methods: {
     loadPlayer () {
       this.display = false
@@ -51,7 +66,7 @@ export default {
                 mouseOverImageUrl: null,
                 imageMargin: '2px',
                 hideWithControls: false,
-                showOverAds: false
+                showOverAds: false,
               },
               allowDownload: true,
               allowTheatre: true,
@@ -59,15 +74,14 @@ export default {
               controlBar: {
                 autoHide: true,
                 autoHideTimeout: 3,
-                animated: true
-              }
-            }
+                animated: true,
+              },
+            },
           })
         })
       })
-    }
+    },
   },
-  mounted () { this.loadPlayer() }
 }
 </script>
 <style scoped>

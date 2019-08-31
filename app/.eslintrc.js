@@ -33,9 +33,6 @@ module.exports = {
     'vue/no-v-html': 'error',
     'vue/order-in-components': 'error',
     'vue/this-in-template': 'error',
-    // 'vuetify/no-deprecated-classes': 'error',
-    // 'vuetify/grid-unknown-attributes': 'error',
-    // 'vuetify/no-legacy-grid': 'error',
   },
   parserOptions: {
     parser: 'babel-eslint',

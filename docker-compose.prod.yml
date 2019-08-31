@@ -1,0 +1,19 @@
+version: "3.4"
+services:
+
+  app:
+    container_name: openpasteapp
+    restart: unless-stopped
+    image: openpasteapp:latest
+    build:
+      context: ./app
+      dockerfile: dockerfile
+    command: ["yarn", "run", "start"]
+    ports:
+      - "80:80"
+    healthcheck:
+      test: ["CMD", "curl", "-sSG", "http://localhost:80/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s

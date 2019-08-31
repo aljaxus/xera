@@ -49,6 +49,7 @@ export default {
         // Add the component back in
         this.display = true
         this.$nextTick(() => {
+          // eslint-disable-next-line no-undef
           this.player = fluidPlayer('video-id', {
             layoutControls: {
               fillToContainer: false,
